@@ -224,7 +224,12 @@
     padding: 0.1rem 0.4rem;
     margin-left: 0.45rem;
     vertical-align: 0.1rem;
+    white-space: nowrap;
   }
+  .type-core       { color: #4A5661; background: #EEF0ED; border-color: #DDE1DB; }
+  .type-lab        { color: var(--teal-dark); background: var(--teal-wash); border-color: #CDE5E0; }
+  .type-project    { color: #5B4B8A; background: #EFEBF7; border-color: #DFD8EE; }
+  .type-reflection { color: #3A6EA5; background: #E9F1F9; border-color: #D6E4F2; }
   .lesson-links {
     display: flex;
     gap: 0.45rem;
@@ -353,7 +358,10 @@
       mainSpan.className = 'lesson-main';
       let inner = '<span class="lesson-title">' + l.title + '</span>';
       if (l.spotlight) inner += '<span class="spot-kind">' + l.spotlight + '</span>';
-      if (l.type) inner += '<span class="type-badge">' + l.type + '</span>';
+      if (l.type) {
+        const slug = l.type === 'Core Lesson' ? 'core' : l.type.toLowerCase();
+        inner += '<span class="type-badge type-' + slug + '">' + l.type + '</span>';
+      }
       mainSpan.innerHTML = inner;
 
       row.appendChild(idSpan);
