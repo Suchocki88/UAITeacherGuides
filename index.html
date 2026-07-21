@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Teacher Resource Hub — Understanding and Working with AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #22303C;
+    --ink-soft: #3B4B59;
+    --paper: #F5F6F3;
+    --card: #FFFFFF;
+    --rule: #E3E6E0;
+    --teal: #0F7B6C;
+    --teal-dark: #0A5A4F;
+    --teal-wash: #EAF4F2;
+    --amber: #A9721B;
+    --amber-wash: #FBF3E4;
+    --slate: #66727D;
+    --focus: #0F7B6C;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; animation: none !important; }
+  }
+  body {
+    font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  a { color: var(--teal); }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 2px; }
+
+  /* ---------- Header ---------- */
+  header {
+    background: var(--ink);
+    color: #F2F4F1;
+    padding: 2.4rem 1.5rem 2rem;
+  }
+  .head-inner { max-width: 880px; margin: 0 auto; }
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #9FB4AC;
+    margin-bottom: 0.6rem;
+  }
+  h1 {
+    font-family: "Bricolage Grotesque", Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 4vw, 2.3rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .subtitle {
+    margin-top: 0.5rem;
+    color: #C4CDC9;
+    font-size: 1rem;
+    max-width: 56ch;
+  }
+
+  /* ---------- Toolbar ---------- */
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--card);
+    border-bottom: 1px solid var(--rule);
+    padding: 0.8rem 1.5rem;
+  }
+  .toolbar-inner {
+    max-width: 880px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0.7rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .search-wrap { position: relative; flex: 1 1 240px; }
+  .search-wrap svg {
+    position: absolute; left: 0.7rem; top: 50%; transform: translateY(-50%);
+    width: 15px; height: 15px; stroke: var(--slate); fill: none; stroke-width: 2;
+    pointer-events: none;
+  }
+  #search {
+    width: 100%;
+    padding: 0.55rem 0.8rem 0.55rem 2.2rem;
+    font: inherit;
+    font-size: 0.95rem;
+    border: 1.5px solid var(--rule);
+    border-radius: 6px;
+    background: var(--paper);
+    color: var(--ink);
+  }
+  #search::placeholder { color: var(--slate); }
+  #search:focus { border-color: var(--teal); outline: none; box-shadow: 0 0 0 3px var(--teal-wash); }
+  .tool-btn {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: none;
+    border: 1.5px solid var(--rule);
+    border-radius: 6px;
+    color: var(--ink-soft);
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .tool-btn:hover { border-color: var(--teal); color: var(--teal-dark); }
+  #result-note {
+    font-size: 0.85rem;
+    color: var(--slate);
+    width: 100%;
+    display: none;
+  }
+
+  /* ---------- Chapters ---------- */
+  main { max-width: 880px; margin: 0 auto; padding: 1.6rem 1.5rem 4rem; }
+  .chapter {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+  .chapter-toggle {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 1rem 1.1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font: inherit;
+    color: var(--ink);
+  }
+  .chapter-toggle:hover { background: #FAFBF9; }
+  .ch-num {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    color: var(--teal-dark);
+    background: var(--teal-wash);
+    border-radius: 4px;
+    padding: 0.3rem 0.5rem;
+    white-space: nowrap;
+  }
+  .ch-title {
+    font-family: "Bricolage Grotesque", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.15rem;
+    flex: 1;
+  }
+  .ch-count {
+    font-size: 0.82rem;
+    color: var(--slate);
+    white-space: nowrap;
+  }
+  .chevron {
+    width: 14px; height: 14px;
+    stroke: var(--slate); fill: none; stroke-width: 2.5;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+  .chapter.open .chevron { transform: rotate(180deg); }
+  .lesson-list { display: none; border-top: 1px solid var(--rule); }
+  .chapter.open .lesson-list { display: block; }
+
+  /* ---------- Lesson rows ---------- */
+  .lesson {
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    padding: 0.7rem 1.1rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .lesson:last-child { border-bottom: none; }
+  .lesson-id {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.8rem;
+    color: var(--teal-dark);
+    min-width: 2.4rem;
+    flex-shrink: 0;
+  }
+  .lesson.spotlight { border-left: 3px solid var(--amber); padding-left: calc(1.1rem - 3px); }
+  .lesson.spotlight .lesson-id { color: var(--amber); font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; min-width: 2.4rem; }
+  .lesson.intro-row .lesson-id { font-size: 0.68rem; letter-spacing: 0.05em; text-transform: uppercase; }
+  .lesson-main { flex: 1; min-width: 0; }
+  .lesson-title { font-weight: 600; font-size: 0.98rem; }
+  .spot-kind {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--amber);
+    background: var(--amber-wash);
+    border-radius: 3px;
+    padding: 0.1rem 0.4rem;
+    margin-left: 0.45rem;
+    vertical-align: 0.1rem;
+  }
+  .type-badge {
+    display: inline-block;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 0.1rem 0.4rem;
+    margin-left: 0.45rem;
+    vertical-align: 0.1rem;
+  }
+  .lesson-links {
+    display: flex;
+    gap: 0.45rem;
+    flex-shrink: 0;
+  }
+  .doc-link {
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--teal-dark);
+    background: var(--teal-wash);
+    border-radius: 5px;
+    padding: 0.3rem 0.65rem;
+    white-space: nowrap;
+  }
+  .doc-link:hover { background: var(--teal); color: #fff; }
+  .doc-pending {
+    font-size: 0.78rem;
+    color: var(--slate);
+    border: 1.5px dashed var(--rule);
+    border-radius: 5px;
+    padding: 0.25rem 0.6rem;
+    white-space: nowrap;
+    cursor: default;
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    text-align: center;
+    padding: 0 1.5rem 3rem;
+    font-size: 0.82rem;
+    color: var(--slate);
+  }
+
+  /* ---------- Search-filter states ---------- */
+  .lesson.hide, .chapter.hide { display: none; }
+
+  /* ---------- Mobile ---------- */
+  @media (max-width: 560px) {
+    .lesson { flex-wrap: wrap; row-gap: 0.4rem; }
+    .lesson-main { flex-basis: calc(100% - 3.3rem); }
+    .lesson-links { margin-left: 3.3rem; }
+    .lesson.spotlight .lesson-links { margin-left: 3.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="head-inner">
+    <p class="eyebrow">Teacher Resource Hub</p>
+    <h1>Understanding and Working with AI</h1>
+    <p class="subtitle">Teacher guides and state standards alignments for every numbered lesson, organized by chapter. Spotlights are shown in sequence for course flow; they are components of the surrounding lessons. Student course materials live on Conceptual Academy.</p>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="toolbar-inner">
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      <input id="search" type="search" placeholder="Search by lesson number or title (e.g., 3.2 or bias)" aria-label="Search lessons">
+    </div>
+    <button class="tool-btn" id="expand-all" type="button">Expand all</button>
+    <button class="tool-btn" id="collapse-all" type="button">Collapse all</button>
+    <p id="result-note" role="status"></p>
+  </div>
+</div>
+
+<main id="chapters" aria-label="Course chapters"></main>
+
+<footer>
+  Understanding and Working with AI · A Conceptual and Experiential Approach<br>
+  Questions or broken links? Contact the program team.
+</footer>
+
+<script src="lessons.js"></script>
+<script>
+(function () {
+  const main = document.getElementById('chapters');
+
+  /* ---- Build the chapter accordion from CHAPTERS data ---- */
+  CHAPTERS.forEach(function (ch) {
+    const section = document.createElement('section');
+    section.className = 'chapter';
+    section.dataset.chapter = ch.num;
+
+    const listId = 'ch-list-' + ch.num;
+    const lessonCount = ch.lessons.filter(l => !l.spotlight).length;
+    const spotCount = ch.lessons.length - lessonCount;
+    const countLabel = ch.num === 0
+      ? lessonCount + ' teacher pages'
+      : lessonCount + ' lessons' + (spotCount ? ' · ' + spotCount + ' spotlight' + (spotCount > 1 ? 's' : '') : '');
+    const chLabel = ch.num === 0 ? 'START' : 'CH ' + String(ch.num).padStart(2, '0');
+
+    const toggle = document.createElement('button');
+    toggle.className = 'chapter-toggle';
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.setAttribute('aria-controls', listId);
+    toggle.innerHTML =
+      '<span class="ch-num">' + chLabel + '</span>' +
+      '<span class="ch-title">' + ch.title + '</span>' +
+      '<span class="ch-count">' + countLabel + '</span>' +
+      '<svg class="chevron" viewBox="0 0 24 24" aria-hidden="true"><polyline points="5 9 12 16 19 9"/></svg>';
+    toggle.addEventListener('click', function () {
+      const open = section.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+
+    const list = document.createElement('div');
+    list.className = 'lesson-list';
+    list.id = listId;
+
+    ch.lessons.forEach(function (l) {
+      const row = document.createElement('div');
+      row.className = 'lesson' + (l.spotlight ? ' spotlight' : '') + (l.intro ? ' intro-row' : '');
+      row.dataset.search = (
+        (l.spotlight ? 'spotlight ' + l.spotlight + ' ' : (l.intro ? 'intro start here ' : l.id + ' ')) +
+        l.title + ' ' + (l.type || '')
+      ).toLowerCase();
+
+      const idSpan = document.createElement('span');
+      idSpan.className = 'lesson-id';
+      idSpan.textContent = l.spotlight ? 'Spot' : (l.intro ? 'Intro' : l.id);
+
+      const mainSpan = document.createElement('span');
+      mainSpan.className = 'lesson-main';
+      let inner = '<span class="lesson-title">' + l.title + '</span>';
+      if (l.spotlight) inner += '<span class="spot-kind">' + l.spotlight + '</span>';
+      if (l.type) inner += '<span class="type-badge">' + l.type + '</span>';
+      mainSpan.innerHTML = inner;
+
+      row.appendChild(idSpan);
+      row.appendChild(mainSpan);
+      if (!l.spotlight) {
+        const links = document.createElement('span');
+        links.className = 'lesson-links';
+        links.appendChild(makeLink('Guide', l.guideUrl));
+        if (!l.intro) links.appendChild(makeLink('Standards', l.standardsUrl));
+        row.appendChild(links);
+      }
+      list.appendChild(row);
+    });
+
+    section.appendChild(toggle);
+    section.appendChild(list);
+    main.appendChild(section);
+  });
+
+  function makeLink(label, url) {
+    if (url) {
+      const a = document.createElement('a');
+      a.className = 'doc-link';
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.textContent = label;
+      return a;
+    }
+    const span = document.createElement('span');
+    span.className = 'doc-pending';
+    span.textContent = label + ' — in development';
+    span.title = 'This document is being prepared and will be linked soon.';
+    return span;
+  }
+
+  /* ---- Expand / collapse all ---- */
+  function setAll(open) {
+    document.querySelectorAll('.chapter').forEach(function (c) {
+      c.classList.toggle('open', open);
+      c.querySelector('.chapter-toggle').setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+  document.getElementById('expand-all').addEventListener('click', function () { setAll(true); });
+  document.getElementById('collapse-all').addEventListener('click', function () { setAll(false); });
+
+  /* ---- Live search ---- */
+  const searchBox = document.getElementById('search');
+  const note = document.getElementById('result-note');
+  searchBox.addEventListener('input', function () {
+    const q = searchBox.value.trim().toLowerCase();
+    let hits = 0;
+
+    document.querySelectorAll('.chapter').forEach(function (c) {
+      let chapterHits = 0;
+      c.querySelectorAll('.lesson').forEach(function (row) {
+        const match = !q || row.dataset.search.indexOf(q) !== -1;
+        row.classList.toggle('hide', !match);
+        if (match) chapterHits++;
+      });
+      hits += q ? chapterHits : 0;
+      if (q) {
+        c.classList.toggle('hide', chapterHits === 0);
+        c.classList.toggle('open', chapterHits > 0);
+      } else {
+        c.classList.remove('hide');
+      }
+    });
+
+    if (q) {
+      note.style.display = 'block';
+      note.textContent = hits === 0
+        ? 'No lessons match \u201C' + searchBox.value.trim() + '\u201D. Try a lesson number (like 4.2) or a keyword from the title.'
+        : hits + (hits === 1 ? ' lesson matches.' : ' lessons match.');
+    } else {
+      note.style.display = 'none';
+      setAll(false);
+      document.querySelector('.chapter').classList.add('open');
+      document.querySelector('.chapter .chapter-toggle').setAttribute('aria-expanded', 'true');
+    }
+  });
+
+  /* ---- Start with Chapter 1 open ---- */
+  const first = document.querySelector('.chapter');
+  first.classList.add('open');
+  first.querySelector('.chapter-toggle').setAttribute('aria-expanded', 'true');
+})();
+</script>
+</body>
+</html>
